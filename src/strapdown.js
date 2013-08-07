@@ -284,6 +284,9 @@
       //
 
       // Generate Markdown
+      if (strapdown.preprocessor) {
+        markdown = strapdown.preprocessor.preprocess(markdown);
+      }
       var html = generateMarkdown(markdown);
       if (html.then) {
         html.then(function(data) {
