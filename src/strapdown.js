@@ -1,4 +1,16 @@
-;(function(window, document) {
+;(function(window, document, strapdown) {
+  strapdown.hasWorker = ("undefined" !== typeof Worker);
+  strapdown.hasWhen = ("undefined" !== typeof when);
+  strapdown.hasJQuery = ("undefined" !== typeof jQuery);
+  strapdown.hasJQueryDeferred = (strapdown.hasJQuery && "undefined" !== typeof jQuery.Deferred);
+
+  // Must be relative to the PAGE URL, NOT THIS SCRIPT'S URL!
+  strapdown.pathToWorker = strapdown.pathToWorker || "web-worker.js";
+
+  // We need Worker and deferreds to use Workers effectively.
+  strapdown.canUseWorkers = strapdown.hasWorker && (strapdown.hasWhen || strapdown.hasJQueryDeferred);
+
+  strapdown.process = function() {
 
   // Hide body until we're done fiddling with the DOM
   document.body.style.display = 'none';
@@ -44,6 +56,75 @@
       }
     };
   }());
+
+    // When using Workers
+    function WorkerHelper(pathToWorker) {
+      this.deferreds = {};
+      this.pathToWorker = pathToWorker;
+    }
+
+    WorkerHelper.prototype.onMessage = function(e) {
+        console.log("message", e, e.data);
+
+        var deferreds = this.deferreds;
+
+        var id = e.data.id;
+        var deferred = deferreds[id];
+        console.log(id, deferred);
+        delete deferreds[id];
+
+        if ("string" === typeof e.data.marked) {
+            deferred.resolve(e.data);
+        } else {
+            deferred.reject();
+        }
+    };
+
+    WorkerHelper.prototype.generateMarkdown = function(markdown) {
+        var deferreds = this.deferreds;
+
+        var idx = deferreds.idx || 0;
+        var id = "d" + idx;
+        deferreds.idx = (idx + 1);
+
+        var deferredAndPromise = this.createDeferredAndPromise();
+        deferreds[id] = deferredAndPromise.deferred;
+
+        var w = new Worker(this.pathToWorker);
+        w.onmessage = this.onMessage.bind(this);
+        w.postMessage({
+            cmd: "parseContent",
+            content: markdown,
+            id: id
+        });
+        return deferredAndPromise.promise;
+    };
+
+    // A "when all" wrapper for either when.js or jQuery.
+    WorkerHelper.prototype.whenAll = function(deferreds) {
+        if (strapdown.hasWhen) {
+            return when.all(deferreds);
+        } else {
+            return jQuery.when.apply(jQuery, deferreds);
+        }
+    };
+
+    // A deferred factory for either when.js or jQuery.
+    WorkerHelper.prototype.createDeferredAndPromise = function() {
+        var deferred = null,
+            promise = null;
+        if (strapdown.hasWhen) {
+            deferred = when.defer();
+            promise = deferred.promise;
+        } else {
+            deferred = jQuery.Deferred();
+            promise = deferred.promise();
+        }
+        return {
+            deferred: deferred,
+            promise: promise
+        };
+    };
 
   //////////////////////////////////////////////////////////////////////
   //
@@ -100,6 +181,13 @@
   linkEl.rel = 'stylesheet';
   document.head.appendChild(linkEl);
 
+  function onFinished() {
+    console.log("finished all");
+    // All done - show body
+    document.body.style.display = '';
+    strapdown.onFinished && strapdown.onFinished();
+  }
+
   (function markdownAll(markdownEls) {
     var navbarAdded = false;
 
@@ -114,13 +202,25 @@
         headlineEl.innerHTML = title;
     }
 
-    function markdownIt(markdownEl, i) {
+    function generateMarkdown(markdown) {
+        if (false === strapdown.useWorkersIfAvailable || !strapdown.canUseWorkers) {
+            strapdown.async = false;
+            return marked(markdown);
+        } else {
+            strapdown.async = true;
+            return workerHelper.generateMarkdown(markdown);
+        }
+    }
+
+    function markdownIt(markdownEls, i) {
       //////////////////////////////////////////////////////////////////////
       //
       // <body> stuff
       //
 
+      var markdownEl = markdownEls[i];
       var markdown = markdownEl.textContent || markdownEl.innerText;
+
       // Keep existing id if present
       var id = markdownEl.id || ('content' + i);
 
@@ -141,14 +241,30 @@
       //
 
       // Generate Markdown
-      var html = marked(markdown);
-      newNode.innerHTML = html;
+      var html = generateMarkdown(markdown);
+      if (html.then) {
+        html.then(function(data) {
+          console.log("finished item", i, "of", markdownEls.length);
+          newNode.innerHTML = data.marked;
+        });
+      } else {
+        newNode.innerHTML = html;
+      }
+      return html;
     }
+
+    var results = [];
+    var workerHelper = new WorkerHelper(strapdown.pathToWorker);
 
     for (var i = 0; i < markdownEls.length; i++) {
       if (markdownEls[i].className.split(" ").indexOf("strapdown-ignore") < 0) {
-        markdownIt(markdownEls[i], i);
+        results.push(markdownIt(markdownEls, i));
       }
+    }
+    if (results[0].then) {
+      // Existence of results[0].then signifies we using deferreds.
+      // Both when.js's when.all() and jQuery's jQuery.when() return an object with a then() method.
+      workerHelper.whenAll(results).then(onFinished);
     }
   }(markdownEls));
 
@@ -168,7 +284,14 @@
     tableEl.className = 'table table-striped table-bordered';
   }
 
-  // All done - show body
-  document.body.style.display = '';
+  if (strapdown.onFinished && !strapdown.async) {
+    onFinished();
+  }
 
-})(window, document);
+  };
+
+  if (false !== strapdown.processImmediately) {
+    strapdown.process();
+  }
+
+})(window, document, window["strapdown"] || {});

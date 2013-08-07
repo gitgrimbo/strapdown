@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+<script>
+// Pick a deferred implementation. One is required for the web workers to work.
+// Copy when.js and/or jquery.min.js into the vendor folder before running the test.
+(function() {
+    function prepareAMDWhen() {
+        // https://github.com/cujojs/when#legacy-environments
+        window.define = function(factory) {
+            try{ delete window.define; } catch(e){ window.define = void 0; } // IE
+            window.when = factory();
+        };
+        window.define.amd = {};
+    }
+
+    // Determine which Deferred impl to use.
+    var deferredImpl = null;
+    if (window.location.href.indexOf("deferredImpl=when") > -1) {
+        prepareAMDWhen();
+        deferredImpl = "../../vendor/when.js";
+    } else if (window.location.href.indexOf("deferredImpl=jquery") > -1) {
+        deferredImpl = "../../vendor/jquery.min.js";
+    }
+    if (deferredImpl) {
+        document.writeln('<script src="' + deferredImpl + '"></scr' + 'ipt>');
+    }
+    console.log(deferredImpl);
+}());
+</script>
+
+<script>
+function bindEvent(el, eventName, eventHandler) {
+  if (el.addEventListener){
+    el.addEventListener(eventName, eventHandler, false);
+  } else if (el.attachEvent){
+    el.attachEvent('on'+eventName, eventHandler);
+  }
+}
+
+bindEvent(window, "load", function() {
+    var el = document.getElementsByTagName("xmp")[0];
+    el.id = "xmp0";
+    var numEls = 8;
+    for (var i = 1; i < numEls; i++) {
+        var clone = el.cloneNode(true);
+        clone.id = "xmp" + i;
+        el.parentNode.insertBefore(clone, el.nextSibling);
+    }
+    console.log(document.getElementsByTagName("xmp").length);
+});
+</script>
+<script>
+var strapdown = {
+    onFinished: function() {
+        console.log("onFinished");
+        //console.profileEnd();
+        var el = document.createElement("div");
+        el.innerHTML = "" + (+new Date() - strapdown.start);
+        document.body.insertBefore(el, document.body.firstChild);
+    }
+};
+strapdown.start = +new Date();
+strapdown.processImmediately = false;
+strapdown.pathToWorker = "../v/0.3/web-worker.js";
+//console.profile("1");
+</script>
+<script src="../v/0.3/strapdown.js"></script>
+
+<button id="use-workers" onclick="strapdown.start = +new Date(); strapdown.process()">Use Workers</button>
+<button id="dont-use-workers" onclick="strapdown.useWorkersIfAvailable = false; strapdown.start = +new Date(); strapdown.process()">Do not use Workers</button>
+
+<script>
+(function() {
+if (!strapdown.canUseWorkers) {
+    var btn = document.getElementById("use-workers");
+    btn.setAttribute("disabled", true);
+    btn.innerHTML = "Workers are not supported in this browser";
+}
+}());
+</script>
+
+
+
+
+
+<xmp theme="united" style="display:none;">
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 1
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 2
+````
+<textarea>Textarea as code sample.</textarea>
+````
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+## Markdown 3
+Check <strong>HTML</strong> <em>tags</em> <u>still</u> work.
+
+# End
+</xmp>
+
+
+
+</body>
+</html>

@@ -24,6 +24,10 @@ bundle += (cat 'vendor/prettify.min.js') + '\n'
 bundle += (cat 'src/strapdown.js') + '\n'
 bundle.to outDir + '/strapdown.js'
 
+# Needed for web-worker.js to import
+cp '-f', 'vendor/marked.min.js', outDir
+cp '-f', 'src/web-worker.js', outDir
+
 # CSS
 cp '-f', 'src/strapdown.css', outDir
 mkdir '-p', outDir + '/themes'
