@@ -3,6 +3,9 @@
   strapdown.hasWhen = ("undefined" !== typeof when);
   strapdown.hasJQuery = ("undefined" !== typeof jQuery);
   strapdown.hasJQueryDeferred = (strapdown.hasJQuery && "undefined" !== typeof jQuery.Deferred);
+  if ("undefined" === typeof strapdown.useWorkersIfAvailable) {
+    strapdown.useWorkersIfAvailable = true;
+  }
 
   // Must be relative to the PAGE URL, NOT THIS SCRIPT'S URL!
   strapdown.pathToWorker = strapdown.pathToWorker || "web-worker.js";
@@ -59,44 +62,84 @@
 
     // When using Workers
     function WorkerHelper(pathToWorker) {
-      this.deferreds = {};
-      this.pathToWorker = pathToWorker;
+        this.pathToWorker = pathToWorker;
+        this.workerPoolSize = 4;
+        this.workersInUse = [];
+        this.workersFree = [];
+        this.workQueue = [];
     }
 
-    WorkerHelper.prototype.onMessage = function(e) {
-        console.log("message", e, e.data);
+    WorkerHelper.prototype.onMessage = function(worker, deferred, e) {
+        var M = "WorkerHelper.onMessage";
+        console.log(M, "workersInUse", this.workersInUse.length);
 
-        var deferreds = this.deferreds;
+        // Move this worker from used to free.
+        for (var i = 0; i < this.workersInUse.length; i++) {
+            //console.log(M, i, this.workersInUse[i], worker, this.workersInUse[i] === worker);
+            if (this.workersInUse[i] === worker) {
+                console.log(M, "Found worker at ", i);
+                this.workersInUse.splice(i, 1);
+                this.workersFree.push(worker);
+                break;
+            }
+        }
 
-        var id = e.data.id;
-        var deferred = deferreds[id];
-        console.log(id, deferred);
-        delete deferreds[id];
-
+        // Use setTimeout to make the resolve/reject the next item in the event loop.
         if ("string" === typeof e.data.marked) {
-            deferred.resolve(e.data);
+            console.log(M, "resolve");
+            setTimeout(deferred.resolve.bind(deferred, e.data), 1);
         } else {
-            deferred.reject();
+            console.log(M, "reject");
+            setTimeout(deferred.reject.bind(deferred), 1);
+        }
+
+        // Pop off the next piece of work and process it.
+        console.log(M, "workQueue", this.workQueue.length);
+        if (this.workQueue.length > 0) {
+            var work = this.workQueue.shift();
+            this.generateMarkdown(work[0], work[1]);
         }
     };
 
-    WorkerHelper.prototype.generateMarkdown = function(markdown) {
-        var deferreds = this.deferreds;
+    WorkerHelper.prototype.nextFreeWorker = function() {
+        var M = "WorkerHelper.nextFreeWorker";
+        var w = null;
+        if (this.workersFree.length > 0) {
+            console.log(M, "workersFree", this.workersFree.length);
+            w = this.workersFree.shift();
+            this.workersInUse.push(w);
+            return w;
+        } else if (this.workersInUse.length < this.workerPoolSize) {
+            console.log(M, "workersInUse", this.workersInUse.length);
+            w = new Worker(this.pathToWorker);
+            this.workersInUse.push(w);
+            return w;
+        } else {
+            console.log(M, "No free workers");
+            return null;
+        }
+    };
 
-        var idx = deferreds.idx || 0;
-        var id = "d" + idx;
-        deferreds.idx = (idx + 1);
+    WorkerHelper.prototype.generateMarkdown = function(markdown, deferredAndPromise) {
+        console.log("WorkerHelper.generateMarkdown");
 
-        var deferredAndPromise = this.createDeferredAndPromise();
-        deferreds[id] = deferredAndPromise.deferred;
+        var w = this.nextFreeWorker();
 
-        var w = new Worker(this.pathToWorker);
-        w.onmessage = this.onMessage.bind(this);
+        deferredAndPromise = deferredAndPromise || this.createDeferredAndPromise();
+
+        if (null === w) {
+            // Save the work, and return the promise which will be fulfilled later on.
+            this.workQueue.push([markdown, deferredAndPromise]);
+            return deferredAndPromise.promise;
+        }
+
+        w.onmessage = this.onMessage.bind(this, w, deferredAndPromise.deferred);
         w.postMessage({
             cmd: "parseContent",
             content: markdown,
-            id: id
+            id: ""
         });
+
         return deferredAndPromise.promise;
     };
 
