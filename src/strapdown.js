@@ -227,7 +227,7 @@
       var newNode = document.createElement('div');
       newNode.className = 'container';
       newNode.id = id;
-      document.body.replaceChild(newNode, markdownEl);
+      markdownEl.parentElement.replaceChild(newNode, markdownEl);
 
       // Insert navbar if there's none
       if (!navbarEl && titleEl && !navbarAdded) {
