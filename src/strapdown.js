@@ -284,7 +284,7 @@
     tableEl.className = 'table table-striped table-bordered';
   }
 
-  if (strapdown.onFinished && !strapdown.async) {
+  if (!strapdown.async) {
     onFinished();
   }
 
