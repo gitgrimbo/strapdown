@@ -319,7 +319,10 @@
   for (var i=0, ii=codeEls.length; i<ii; i++) {
     var codeEl = codeEls[i];
     var lang = codeEl.className;
-    codeEl.className = 'prettyprint lang-' + lang;
+    if (!lang || lang.split(" ").indexOf("prettyprintignore") < 0) {
+      codeEl.className = 'prettyprint lang-' + lang;
+    }
+
   }
   prettyPrint();
 
