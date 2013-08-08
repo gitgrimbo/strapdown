@@ -224,11 +224,36 @@
   linkEl.rel = 'stylesheet';
   document.head.appendChild(linkEl);
 
-  function onFinished() {
-    console.log("finished all");
+  function finishedProcessingMarkdown() {
+    prettify();
+    styleTables();
+
     // All done - show body
     document.body.style.display = '';
     strapdown.onFinished && strapdown.onFinished();
+  }
+
+  function prettify() {
+    // Prettify
+    var codeEls = document.getElementsByTagName('code');
+    for (var i=0, ii=codeEls.length; i<ii; i++) {
+      var codeEl = codeEls[i];
+      var lang = codeEl.className;
+      if (!lang || lang.split(" ").indexOf("prettyprintignore") < 0) {
+        codeEl.className = 'prettyprint lang-' + lang;
+      }
+   
+    }
+    prettyPrint();
+  }
+
+  function styleTables() {
+    // Style tables
+    var tableEls = document.getElementsByTagName('table');
+    for (var i=0, ii=tableEls.length; i<ii; i++) {
+      var tableEl = tableEls[i];
+      tableEl.className = 'table table-striped table-bordered';
+    }
   }
 
   (function markdownAll(markdownEls) {
@@ -310,31 +335,12 @@
     if (results[0].then) {
       // Existence of results[0].then signifies we using deferreds.
       // Both when.js's when.all() and jQuery's jQuery.when() return an object with a then() method.
-      workerHelper.whenAll(results).then(onFinished);
+      workerHelper.whenAll(results).then(finishedProcessingMarkdown);
     }
   }(markdownEls));
 
-  // Prettify
-  var codeEls = document.getElementsByTagName('code');
-  for (var i=0, ii=codeEls.length; i<ii; i++) {
-    var codeEl = codeEls[i];
-    var lang = codeEl.className;
-    if (!lang || lang.split(" ").indexOf("prettyprintignore") < 0) {
-      codeEl.className = 'prettyprint lang-' + lang;
-    }
-
-  }
-  prettyPrint();
-
-  // Style tables
-  var tableEls = document.getElementsByTagName('table');
-  for (var i=0, ii=tableEls.length; i<ii; i++) {
-    var tableEl = tableEls[i];
-    tableEl.className = 'table table-striped table-bordered';
-  }
-
   if (!strapdown.async) {
-    onFinished();
+    finishedProcessingMarkdown();
   }
 
   };
